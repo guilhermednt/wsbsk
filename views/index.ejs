@@ -1,0 +1,42 @@
+<% include layoutTop %>
+<div class="main">
+    <h1>The World's Best Secret Keeper</h1>
+    <p class="lead">Welcome to The World's Best Secret Keeper, where your secrets are totally safe.</p>
+</div>
+<div class="row">
+    <div class="span12">
+        <h2>How It Works</h2>
+    </div>
+    <div class="span12">
+        <p>You have a secret, we know that. We also know you have the urge to share it to someone that won't ever tell it to somebody else.</p>
+        <p><strong>This</strong> is when we come into place! You can <strong>completely</strong> trust us your secret and rest assured they'll die with us. <strong>Nobody</strong> will ever know about it from us.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="span12">
+        <h2>How do I know I can trust you?</h2>
+    </div>
+    <div class="span12">
+        <p>Well, that's quite simple, really: we just don't store anything!</p>
+    </div>
+</div>
+
+<div class="row">
+    <div id="done" class="done">
+        <p><strong>That's it!</strong> Your secret is safe with us now. Nobody will ever know it!</p>
+        <p class="text-center">
+            <a class="btn btn-lg btn-link another" href="#tellSecret"><strong>Awesome!</strong> But I have another one...</a>
+        </p>
+    </div>
+    <form id="tellSecret" role="form">
+        <div class="form-group">
+            <label for="secret">Your Secret:</label>
+            <textarea id="secret" class="form-control" rows="3" placeholder="We won't tell nobody! Word."></textarea>
+        </div>
+        <p class="text-center">
+            <button class="btn btn-lg btn-default forgetIt" type="reset">Hmm, forget it...</button>
+            <a class="btn btn-lg btn-primary submit" href="#done">Okay, I'm done!</a>
+        </p>
+    </form>
+</div>
+<% include layoutBottom %>
