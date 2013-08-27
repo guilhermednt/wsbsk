@@ -28,14 +28,14 @@
             <a class="btn btn-lg btn-link another" href="#tellSecret"><strong>Awesome!</strong> But I have another one...</a>
         </p>
     </div>
-    <form id="tellSecret" role="form">
+    <form action="/secret" id="tellSecret" role="form" method="post">
         <div class="form-group">
             <label for="secret">Your Secret:</label>
-            <textarea id="secret" class="form-control" rows="3" placeholder="We won't tell nobody! Word."></textarea>
+            <textarea id="secret" name="secret" class="form-control" rows="3" placeholder="We won't tell nobody! Word."></textarea>
         </div>
         <p class="text-center">
             <button class="btn btn-lg btn-default forgetIt" type="reset">Hmm, forget it...</button>
-            <a class="btn btn-lg btn-primary submit" href="#done">Okay, I'm done!</a>
+            <button class="btn btn-lg btn-primary submit">Okay, I'm done!</button>
         </p>
     </form>
 </div>

@@ -1,0 +1,7 @@
+<% include layoutTop %>
+<ul>
+<% for(var i=0; i<secrets.length; i++) {%>
+   <li><%= secrets[i].secret %></li>
+<% } %>
+</ul>
+<% include layoutBottom %>
