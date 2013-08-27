@@ -4,9 +4,6 @@ var Server = require('mongodb').Server;
 var BSON = require('mongodb').BSON;
 var ObjectID = require('mongodb').ObjectID;
 
-var Util = require('./util').Util;
-var util = new Util();
-
 SecretProvider = function(host, port) {
 	this.db = new Db('node-mongo-blog', new Server(host, port, {auto_reconnect: true}, {}));
 	this.db.open(function(){});
@@ -47,6 +44,21 @@ SecretProvider.prototype.findById = function(id, callback) {
 	});
 };
 
+SecretProvider.prototype.findRandom = function(exclude, callback) {
+	this.getCollection(function(error, secret_collection) {
+		if (error) callback(error);
+		else {
+			secret_collection.findOne({
+				_id: {$ne:  exclude},
+				shared: false
+			}, function(error, result) {
+				if (error) callback(error);
+				else callback(null, result);
+			});
+		}
+	});
+};
+
 SecretProvider.prototype.save = function(secrets, callback) {
 	this.getCollection(function(error, secret_collection) {
 		if (error) callback(error);
@@ -63,7 +75,7 @@ SecretProvider.prototype.save = function(secrets, callback) {
 					secret.random = getRandomInt(0, 9999999999);
 				}
 
-				secret_collection.insert(secrets, function() {
+				secret_collection.insert(secret, function() {
 					callback(null, secrets);
 				});
 			}
