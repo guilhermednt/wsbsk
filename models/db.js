@@ -13,7 +13,6 @@ var secretSchema = new mongoose.Schema({
 secretSchema.statics.randomUnshared = function(exclude, callback) {
 	this.$where('this.shares.current < this.shares.max').find({_id: { $ne: exclude}}).count(function(err, count) {
 		if (err) {
-			console.log(err);
 			return callback(err);
 		}
 		if (count > 0) {
@@ -58,12 +57,15 @@ keySchema.statics.shareSecret = function(key, callback) {
 			}
 			uKey.used = true;
 			uKey.save(function(error, uKey){
-				Secret.shareRandom(uKey.secret, callback);
+				if (error) callback(error);
+				else {
+					Secret.shareRandom(uKey.secret, callback);
+				}
 			});
 		}
 	});
 };
 var Key = mongoose.model('Key', keySchema);
 
-var dbAuth = require('dbAuth');
-mongoose.connect( 'mongodb://'+dbAuth.credentials+'localhost/secrets' );
+var dbAuth = require('./dbAuth');
+mongoose.connect( 'mongodb://'+dbAuth.credentials+'@localhost/secrets' );

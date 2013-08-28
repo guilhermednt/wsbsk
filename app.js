@@ -74,8 +74,7 @@ app.get('/random/:key', function(req, res){
 		if (error) errors.error(req, res, error);
 		else {
 			if (random !== null) {
-				req.session.secret = random;
-				done.done(req, res);
+				res.render('done', { title: false, secret: random });
 			} else {
 				res.redirect('/');
 			}
