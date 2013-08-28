@@ -1,0 +1,5 @@
+// Rename this file to dbAuth.js
+
+Db.authenticate("USER", "PASSWORD", function(err, res) {
+	if (err) console.log(err);
+});

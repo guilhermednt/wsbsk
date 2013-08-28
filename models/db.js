@@ -66,3 +66,4 @@ keySchema.statics.shareSecret = function(key, callback) {
 var Key = mongoose.model('Key', keySchema);
 
 mongoose.connect( 'mongodb://localhost/secrets' );
+require('dbAuth');
