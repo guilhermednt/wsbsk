@@ -6,15 +6,15 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title><%= title %></title>
-        <meta name="description" content="The World's Best Secret Keeper is a place where your secrets are completely safe.">
+        <title><%= title?(title + " - "):"" %>The World's Second Best Secret Keeper</title>
+        <meta name="description" content="The World's Second Best Secret Keeper is a place where your secrets are completely safe.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-        <link rel="stylesheet" href="stylesheets/bootstrap.min.css">
-        <link rel="stylesheet" href="stylesheets/main.css">
-        <script src="javascripts/vendor/modernizr-2.6.2.min.js"></script>
+        <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+        <link rel="stylesheet" href="/stylesheets/main.css">
+        <script src="/javascripts/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -29,11 +29,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">The World's Best Secret Keeper</a>
+                    <a class="navbar-brand" href="/">The World's <strong>Second</strong> Best Secret Keeper</a>
                 </div>
                 <div class="collapse navbar-collapse">
+                    <p class="navbar-text">Similar pages:</p>
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
+                        <li><a href="//wbsk.dona.to/">The World's Best Secret Keeper</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>

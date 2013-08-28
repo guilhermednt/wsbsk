@@ -5,16 +5,18 @@
 
 var express = require('express');
 var routes = require('./routes');
-var user = require('./routes/user');
+var index = require('./routes/index');
 var done = require('./routes/done');
+var errors = require('./routes/errors');
 var http = require('http');
 var path = require('path');
-//var SecretProvider = require('./secretprovider').SecretProvider;
 var db = require('./models/db');
 var mongoose = require('mongoose');
 var secretsdata = require('./models/secrets');
+var keysdata = require('./models/keys');
 
 var Secret = mongoose.model('Secret');
+var Key = mongoose.model('Key');
 
 var app = express();
 
@@ -34,49 +36,28 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+	app.use(express.errorHandler());
 }
 
-//var secretProvider = new SecretProvider('localhost', 27017);
-
-app.get('/', function(req, res){
-	res.render('index', {title: 'The World\'s Second Best Secret Keeper'});
-});
-//app.get('/users', user.list);
+app.get('/', routes.index);
 
 app.post('/secret', function(req, res){
 	var secret = new Secret({ secret: req.param('secret'), shares: { max: 2 } });
 	secret.save(function(error, secret){
-		if (error) res.status(500);
+		if (error) errors.error(req, res, error);
 		else {
-			Secret.randomUnshared(secret._id, function(error, random){
-				if (error) res.status(500);
-				else {
-					if (random !== null) {
-						random.shares.current += 1;
-						random.save(function(error, random){
-							req.session.secret = random;
-							done.done(req, res);
-						});
-					} else {
-						res.redirect('/');
+			require('crypto').randomBytes(48, function(ex, buf) {
+				var token = buf.toString('hex');
+				var key = new Key({key: token, secret: secret._id});
+				key.save(function(error,key){
+					if (error) errors.error(req, res, error);
+					else {
+						res.redirect('/random/' + key.key);
 					}
-				}
+				});
 			});
 		}
 	});
-	/*secretProvider.save({
-		secret: req.param('secret')
-	}, function(error, secrets) {
-		secretProvider.findRandom(secrets[0]._id, function(error, secret) {
-			req.session.secret = secret;
-			done.done(req, res);
-		});
-	});
-	*/
-});
-app.get('/done', function(req, res){
-	res.render('done', {title: 'The World\'s Second Best Secret Keeper'});
 });
 
 app.get('/list', function(req, res){
@@ -86,26 +67,15 @@ app.get('/list', function(req, res){
 			secrets: secretslist
 		});
 	});
-	/*
-	secretProvider.findAll(function(error, secrets){
-		res.render('list', {
-			title: 'All Secrets',
-			"secrets": secrets
-		});
-	});
-	*/
 });
 
-app.get('/random', function(req, res){
-	Secret.randomUnshared(null, function(error, random){
-		if (error) res.status(500);
+app.get('/random/:key', function(req, res){
+	Key.shareSecret(req.param('key'), function(error,random){
+		if (error) errors.error(req, res, error);
 		else {
 			if (random !== null) {
-				random.shares.current += 1;
-				random.save(function(error, random){
-					req.session.secret = random;
-					done.done(req, res);
-				});
+				req.session.secret = random;
+				done.done(req, res);
 			} else {
 				res.redirect('/');
 			}
@@ -113,6 +83,20 @@ app.get('/random', function(req, res){
 	});
 });
 
+app.get('/key/:secret', function(req, res){
+	require('crypto').randomBytes(48, function(ex, buf) {
+		var token = buf.toString('hex');
+		var key = new Key({key: token, secret: req.param('secret')});
+		key.save(function(error,key){
+			if (error) errors.error(req, res, error);
+			else {
+				console.log(key);
+				res.send(key);
+			}
+		});
+	});
+});
+
 http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+	console.log('Express server listening on port ' + app.get('port'));
 });

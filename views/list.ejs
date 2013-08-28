@@ -1,7 +1,7 @@
 <% include layoutTop %>
 <ul>
 <% for(var i=0; i<secrets.length; i++) {%>
-   <li><%= secrets[i].secret %> (<%= secrets[i].shares.current %>/<%= secrets[i].shares.max %>)</li>
+   <li><%= secrets[i].secret %> (<%= secrets[i].shares.current %>/<%= secrets[i].shares.max %>) - <%= secrets[i]._id %></li>
 <% } %>
 </ul>
 <% include layoutBottom %>
