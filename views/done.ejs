@@ -1,4 +1,12 @@
 <% include layoutTop %>
-DONE!
-<%= secret.secret %>
-<% include layoutBottom %>
+<div class="row">
+	<div class="span12">
+		<h1>That's it!</h1>
+		<p>Your secret is "safe" with us now. Nobody will ever know it! Except, maybe, 2 other people... Who knows, right?</p>
+
+		<h2>About that...</h2>
+		<p>Hey, look what I've heard from someone:</p>
+		<blockquote><%= secret.secret %></blockquote>
+	</div>
+</div>
+<% include layoutBottom 
